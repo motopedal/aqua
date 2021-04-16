@@ -1,0 +1,6 @@
+{
+  "name": "script",
+  "scripts": {
+    "dev": "gnome-terminal -x bash -c 'cd ./frontend && npm run dev' & gnome-terminal -x bash -c 'cd ./backend && npm run develop'"
+  }
+}
