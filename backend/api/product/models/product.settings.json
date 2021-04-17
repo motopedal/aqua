@@ -11,16 +11,13 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Description": {
+    "description": {
       "type": "richtext"
     },
-    "price": {
-      "type": "biginteger"
-    },
-    "Images": {
+    "images": {
       "collection": "file",
       "via": "related",
       "allowedTypes": [
@@ -32,11 +29,8 @@
     },
     "variants": {
       "collection": "variant",
-      "via": "product"
-    },
-    "order_items": {
-      "collection": "order-item",
-      "via": "product"
+      "via": "products",
+      "dominant": true
     }
   }
 }

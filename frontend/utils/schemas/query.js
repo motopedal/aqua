@@ -4,9 +4,8 @@ const LANDING_PAGE_QUERY = `query {
         url
       }
       products {
-        Name
-        price
-        Images {
+        name
+        images {
           url
         }
       }
@@ -16,14 +15,14 @@ const LANDING_PAGE_QUERY = `query {
 const PRODUCT_PAGE_QUERY = `query {
     products {
       id
-      Name
-      Description
-      price
-      Images {
+      name
+      description
+      images {
         url
       }
       variants {
-        Packaging
+        packaging
+        price
       }
     }
   }

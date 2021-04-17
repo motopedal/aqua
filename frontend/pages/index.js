@@ -7,15 +7,17 @@ import {
   Slide,
   ButtonBack,
   ButtonNext,
-  ImageWithZoom,
+  Image,
 } from "pure-react-carousel";
+import Link from "next/link";
+import gsap from "gsap";
 
 export default function Home({ data }) {
   return (
     <div>
       <div>
         <img
-          style={{ height: "100vh", width: "100%" }}
+          style={{ height: "calc(100vh - 3rem)", width: "100%" }}
           src={`http://localhost:1337${data.Video.url}`}
         />
       </div>
@@ -30,22 +32,36 @@ export default function Home({ data }) {
           naturalSlideHeight={400}
           className="p-36 text-center"
           isPlaying
+          infinite
         >
           <Slider>
-            {data.products.map(({ Name, price, Images }, idx) => {
+            {data.products.map(({ name, images }, idx) => {
               return (
                 <Slide index={idx}>
-                  <div className="h-100">
-                    <center>
-                      <ImageWithZoom
-                        style={{ height: "200px", width: "200px" }}
-                        src={`http://localhost:1337${Images[0].url}`}
-                        isBgImage
-                      />
-                    </center>
-                    <div className="mt-4 font-bold">{Name}</div>
-                    <div>{price}€</div>
-                  </div>
+                  <Link href={`/products?id=${idx}`} as="/products">
+                    <div
+                      className="h-100 cursor-pointer"
+                      onMouseOver={(e) =>
+                        gsap.to(e.currentTarget, {
+                          y: "50px",
+                        })
+                      }
+                      onMouseLeave={(e) =>
+                        gsap.to(e.currentTarget, {
+                          y: 0,
+                        })
+                      }
+                    >
+                      <center>
+                        <Image
+                          style={{ height: "200px", width: "200px" }}
+                          src={`http://localhost:1337${images[0].url}`}
+                          isBgImage
+                        />
+                      </center>
+                      <div className="mt-4 font-bold">{name}</div>
+                    </div>
+                  </Link>
                 </Slide>
               );
             })}

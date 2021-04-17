@@ -11,19 +11,21 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Quantity": {
+    "quantity": {
       "type": "integer"
     },
-    "Total": {
+    "total": {
       "type": "biginteger"
     },
     "product": {
-      "via": "order_items",
       "model": "product"
     },
     "order": {
       "model": "order",
       "via": "order_items"
+    },
+    "variant": {
+      "model": "variant"
     }
   }
 }

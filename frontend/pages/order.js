@@ -14,19 +14,11 @@ import { PRODUCT_PAGE_QUERY } from "../utils/schemas/query";
 import Link from "next/link";
 
 export default memo(function order({ data }) {
-  const {
-    isEmpty,
-    totalUniqueItems,
-    items,
-    updateItemQuantity,
-    removeItem,
-    addItem,
-  } = useCart();
+  const { addItem } = useCart();
   return (
     <div className="flex flex-row flex-wrap gap-6 p-32">
-      {data.map(({ id, Name, Description, price, Images, variants }, idx) => {
+      {data.map(({ id, name, images, variants }, idx) => {
         const quantity = useRef();
-        console.log(data[idx]);
         return (
           <Card
             key={id}
@@ -37,22 +29,20 @@ export default memo(function order({ data }) {
           >
             <CardMedia
               style={{ height: "200px", backgroundSize: "contain" }}
-              image={`http://localhost:1337${Images[0].url}`}
+              image={`http://localhost:1337${images[0]?.url}`}
               title="Contemplative Reptile"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                {Name}
+                {name}
               </Typography>
-              {/* <Typography variant="body2" color="textSecondary" component="p">
-                {Description}
-              </Typography> */}
-
               {variants.length > 0 ? (
-                variants.map(({ Packaging }) => {
+                variants.map(({ packaging, price }) => {
                   return (
                     <div className="flex items-center py-3">
-                      <div className="w-1/6">{Packaging}</div>
+                      <div className="w-1/6">
+                        {packaging} {price}
+                      </div>
                       <TextField
                         id="standard-number"
                         label="Quantity"

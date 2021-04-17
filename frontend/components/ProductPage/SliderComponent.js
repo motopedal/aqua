@@ -8,10 +8,10 @@ import {
   Image,
 } from "pure-react-carousel";
 
-export default function SliderComponent({ Images }) {
+export default function SliderComponent({ images }) {
   return (
     <>
-      {Images.length > 1 ? (
+      {images?.length > 1 ? (
         <CarouselProvider
           visibleSlides={1}
           totalSlides={2}
@@ -22,7 +22,7 @@ export default function SliderComponent({ Images }) {
           isIntrinsicHeight
         >
           <Slider>
-            {Images.map(({ url }, index) => {
+            {images?.map(({ url }, index) => {
               return (
                 <Slide index={index}>
                   <div>
@@ -51,7 +51,7 @@ export default function SliderComponent({ Images }) {
           <center>
             <img
               style={{ height: "400px", width: "400px" }}
-              src={`http://localhost:1337${Images[0].url}`}
+              src={`http://localhost:1337${images[0]?.url}`}
             />
           </center>
         </div>

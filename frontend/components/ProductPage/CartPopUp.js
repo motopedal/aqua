@@ -1,19 +1,12 @@
 import React, { createRef, memo, useEffect, useState } from "react";
 import Popover from "@material-ui/core/Popover";
 import { PrimaryButton } from "../Elements";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  TextField,
-} from "@material-ui/core";
-import { useCart } from "react-use-cart";
+import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 
-export default memo(function CartPopUp({ id: item, variants, price }) {
-  const { addItem } = useCart();
+export default memo(function CartPopUp({ addItem, id: item, variants, price }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [quantityFields, setQuantityFields] = useState([]);
+  const [priceField, setPrice] = useState([]);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
@@ -26,6 +19,11 @@ export default memo(function CartPopUp({ id: item, variants, price }) {
 
   useEffect(() => {
     setQuantityFields((items) =>
+      Array(variants.length)
+        .fill(0)
+        .map((_, i) => items[i] || createRef())
+    );
+    setPrice((items) =>
       Array(variants.length)
         .fill(0)
         .map((_, i) => items[i] || createRef())
@@ -51,24 +49,29 @@ export default memo(function CartPopUp({ id: item, variants, price }) {
         <Card
           key={id}
           style={{
-            flexBasis: `calc(100% / 3 - 1.5rem)`,
+            width: "500px",
             height: "fit-content",
           }}
         >
           <CardContent>
             {variants.length > 0 ? (
-              variants.map(({ Packaging }, idx) => {
+              variants.map(({ packaging, price }, idx) => {
                 return (
-                  <div className="flex items-center py-3">
-                    <div className="w-1/3">{Packaging}</div>
-                    <TextField
-                      id="standard-number"
+                  <div className="flex items-center py-3 justify-between">
+                    <div className="w-1/6">{packaging}</div>
+                    <input
                       type="number"
+                      name={packaging}
                       placeholder="Quantity"
                       ref={quantityFields[idx]}
-                      InputLabelProps={{
-                        shrink: true,
+                      onChange={(e) => {
+                        priceField[idx].current.textContent =
+                          price * e.target.value + " €";
                       }}
+                    />
+                    <div
+                      className="w-14 text-right font-bold"
+                      ref={priceField[idx]}
                     />
                   </div>
                 );
@@ -77,16 +80,19 @@ export default memo(function CartPopUp({ id: item, variants, price }) {
               <div className="flex items-center py-3">Out of stock</div>
             )}
           </CardContent>
-
           <CardActions>
             <Button
               size="small"
               color="primary"
               onClick={() => {
-                const data = { id, price };
-
-                console.log(quantityFields[1].value);
-                // addItem(data, quantity.current.value);
+                const quantity = { total: 0 };
+                quantityFields.forEach((el) => {
+                  quantity[el.current.name.replace(" ", "_")] =
+                    el.current.value;
+                  quantity["total"] += parseInt(el.current.value);
+                });
+                const data = { id: item, price, quantity: quantity };
+                addItem(data, quantity.total);
               }}
             >
               Add to cart

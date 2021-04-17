@@ -11,15 +11,18 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Packaging": {
+    "packaging": {
       "type": "string"
     },
-    "product": {
+    "products": {
       "via": "variants",
-      "model": "product"
+      "collection": "product"
+    },
+    "price": {
+      "type": "biginteger"
     }
   }
 }
