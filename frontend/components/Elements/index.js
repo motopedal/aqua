@@ -1,3 +1,3 @@
-import { PrimaryButton } from "./Buttons";
+import { PrimaryButton, CartButton } from "./Buttons";
 
-export { PrimaryButton };
+export { PrimaryButton, CartButton };

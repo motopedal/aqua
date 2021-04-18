@@ -5,7 +5,7 @@ import "tailwindcss/tailwind.css";
 export default function Navbar() {
   const { totalItems } = useCart();
   return (
-    <div className="flex flex-row justify-between px-16">
+    <div className="flex flex-row justify-between px-16 border-b ">
       <Link href="/">
         <img
           className="w-20 h-full self-center cursor-pointer"
@@ -21,7 +21,7 @@ export default function Navbar() {
       </div>
       <div className="py-4 flex">
         <span className="font-bold mr-3">{totalItems || 0}</span>
-        <Link href="/order">
+        <Link href="/cart">
           <img className="w-5 cursor-pointer" src="bag-png.png" />
         </Link>
       </div>

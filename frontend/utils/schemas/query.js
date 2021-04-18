@@ -21,6 +21,7 @@ const PRODUCT_PAGE_QUERY = `query {
         url
       }
       variants {
+        id
         packaging
         price
       }

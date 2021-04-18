@@ -11,15 +11,15 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Email": {
+    "email": {
       "type": "email"
     },
-    "Total": {
+    "total": {
       "type": "biginteger"
     },
     "order_items": {
-      "via": "order",
-      "collection": "order-item"
+      "collection": "order-item",
+      "via": "order"
     }
   }
 }

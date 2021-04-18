@@ -46,7 +46,6 @@ export default memo(function Products({ data }) {
       setNewPosition(newPos);
     }
   };
-
   useEffect(() => {
     setDivs((items) =>
       Array(data.length)
@@ -56,7 +55,7 @@ export default memo(function Products({ data }) {
   }, [data.length]);
   return (
     <div onWheel={(e) => handleWheel(e.deltaY)} className="overflow-y-hidden">
-      {data.map(({ id, name, price, images, variants }, idx) => {
+      {data.map(({ id, name, images }, idx) => {
         const learnmore = useRef();
         return (
           <>
@@ -74,7 +73,7 @@ export default memo(function Products({ data }) {
                   onClick={() => {
                     gsap.to(learnmore.current, 0.3, {
                       display: "flex",
-                      height: "calc(100vh - 4rem)",
+                      height: "calc(100vh - 4rem + 10px)",
                       zIndex: "2",
                       opacity: "1",
                     });
@@ -85,12 +84,7 @@ export default memo(function Products({ data }) {
               </div>
               <div className="flex flex-col">
                 <SliderComponent images={images} />
-                <CartPopUp
-                  id={id}
-                  variants={variants}
-                  price={price}
-                  addItem={addItem}
-                />
+                <CartPopUp addItem={addItem} data={data[idx]} />
               </div>
             </div>
             <LearnMore

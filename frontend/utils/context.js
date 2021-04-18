@@ -13,7 +13,7 @@ const ContextProvider = (props) => {
     },
   ];
   return (
-    <Context.Provider>
+    <Context.Provider value>
       <Transition
         items={items}
         keys={(item) => item.id}

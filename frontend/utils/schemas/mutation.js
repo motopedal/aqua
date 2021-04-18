@@ -1,14 +1,14 @@
-const CREATE_ORDER_ITEM = `mutation {
-    createOrderItem(input: { data: { Quantity: 2 , Total : 2 , product : "1"} }) {
+const CREATE_ORDER_ITEM = (data) => `mutation {
+    createOrderItem(input: { data: { quantity: ${data.quantity} , total : ${data.total} , product : ${data.product}, variant : ${data.variant}} }) {
       orderItem {
         id
       }
     }
   }`;
 
-const CREATE_ORDER = `mutation {
+const CREATE_ORDER = (data) => `mutation {
     createOrder(
-      input: { data: { Email: "vitya@vitya.com", Total: 3, order_items: 3 } }
+      input: { data: { email: "${data.email}", total: ${data.total}, order_items: [${data.orderItems}] } }
     ) {
       order {
         id

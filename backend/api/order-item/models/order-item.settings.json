@@ -21,8 +21,8 @@
       "model": "product"
     },
     "order": {
-      "model": "order",
-      "via": "order_items"
+      "via": "order_items",
+      "model": "order"
     },
     "variant": {
       "model": "variant"

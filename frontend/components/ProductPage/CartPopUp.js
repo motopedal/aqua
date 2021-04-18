@@ -1,42 +1,48 @@
-import React, { createRef, memo, useEffect, useState } from "react";
+import React, { useRef, memo, useState } from "react";
 import Popover from "@material-ui/core/Popover";
 import { PrimaryButton } from "../Elements";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
+import { useForm } from "react-hook-form";
 
-export default memo(function CartPopUp({ addItem, id: item, variants, price }) {
+export default memo(function CartPopUp({ data: productData, addItem }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [quantityFields, setQuantityFields] = useState([]);
-  const [priceField, setPrice] = useState([]);
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const { register, getValues, reset } = useForm();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleCart = () => {
+    let data = [];
+    const prices = {};
+    productData.variants.map(({ id, price }) => {
+      return (prices[id] = price);
+    });
+    for (const [key, value] of Object.entries(getValues())) {
+      value.map((amount, id) => {
+        data.push({
+          id: productData.id * id * 96,
+          product: key,
+          variant: id,
+          quantity: parseInt(amount),
+          price: prices[id],
+        });
+      });
+    }
+    data.forEach((orderItem) => {
+      if (orderItem.quantity >= 1) {
+        addItem(orderItem, orderItem.quantity);
+      }
+    });
+    reset();
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  useEffect(() => {
-    setQuantityFields((items) =>
-      Array(variants.length)
-        .fill(0)
-        .map((_, i) => items[i] || createRef())
-    );
-    setPrice((items) =>
-      Array(variants.length)
-        .fill(0)
-        .map((_, i) => items[i] || createRef())
-    );
-  }, [variants.length]);
   return (
     <>
-      <PrimaryButton onClick={handleClick} text="add to cart" />
+      <PrimaryButton
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        text="add to cart"
+      />
       <Popover
-        id={id}
-        open={open}
+        id={anchorEl ? "simple-popover" : undefined}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         anchorOrigin={{
           vertical: "top",
           horizontal: "left",
@@ -47,54 +53,42 @@ export default memo(function CartPopUp({ addItem, id: item, variants, price }) {
         }}
       >
         <Card
-          key={id}
           style={{
             width: "500px",
             height: "fit-content",
           }}
         >
           <CardContent>
-            {variants.length > 0 ? (
-              variants.map(({ packaging, price }, idx) => {
-                return (
-                  <div className="flex items-center py-3 justify-between">
-                    <div className="w-1/6">{packaging}</div>
-                    <input
-                      type="number"
-                      name={packaging}
-                      placeholder="Quantity"
-                      ref={quantityFields[idx]}
-                      onChange={(e) => {
-                        priceField[idx].current.textContent =
-                          price * e.target.value + " €";
-                      }}
-                    />
-                    <div
-                      className="w-14 text-right font-bold"
-                      ref={priceField[idx]}
-                    />
-                  </div>
-                );
-              })
+            {productData.variants.length > 0 ? (
+              <form>
+                {productData.variants.map(({ id, packaging, price }) => {
+                  const priceField = useRef();
+                  return (
+                    <div className="flex items-center py-3 justify-between">
+                      <div className="w-1/6">{packaging}</div>
+                      <input
+                        type="number"
+                        placeholder="Quantity"
+                        {...register(`${productData.id}.${id}`)}
+                        onChange={(e) => {
+                          priceField.current.textContent =
+                            price * e.target.value + " €";
+                        }}
+                      />
+                      <div
+                        className="w-14 text-right font-bold"
+                        ref={priceField}
+                      />
+                    </div>
+                  );
+                })}
+              </form>
             ) : (
               <div className="flex items-center py-3">Out of stock</div>
             )}
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => {
-                const quantity = { total: 0 };
-                quantityFields.forEach((el) => {
-                  quantity[el.current.name.replace(" ", "_")] =
-                    el.current.value;
-                  quantity["total"] += parseInt(el.current.value);
-                });
-                const data = { id: item, price, quantity: quantity };
-                addItem(data, quantity.total);
-              }}
-            >
+            <Button size="small" color="primary" onClick={() => handleCart()}>
               Add to cart
             </Button>
           </CardActions>
