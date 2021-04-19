@@ -19,7 +19,7 @@ export default memo(function LearnMore({ learnmore, data, setIsActive }) {
         <div className="mt-14">{description}</div>
         {variants?.map(({ packaging, price }) => {
           return (
-            <div className="mt-14 flex">
+            <div className="mt-14 flex ">
               <div>{packaging}</div>
               <div>{price}</div>
             </div>

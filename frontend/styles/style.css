@@ -10,3 +10,27 @@ html::-webkit-scrollbar-thumb {
 html::-webkit-scrollbar-track {
   margin: 15px 0;
 }
+
+.slider-left {
+  background-image: url(/chevron-disc-left.svg);
+  background-size: 1.5rem;
+  height: 1.5rem;
+}
+
+.slider-right {
+  background-image: url(/chevron-disc-right.svg);
+  background-size: 1.5rem;
+  height: 1.5rem;
+}
+.slider-left,
+.slider-right {
+  transition: 0.4s;
+}
+
+.slider-right:hover {
+  background-image: url(/chevron-disc-right-hover.svg);
+}
+
+.slider-left:hover {
+  background-image: url(/chevron-disc-left-hover.svg);
+}

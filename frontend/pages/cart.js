@@ -16,7 +16,7 @@ import { CartButton } from "../components/Elements";
 
 export default function Cart({ data }) {
   const [priceFields, setPriceFields] = useState([]);
-  const { items, updateItemQuantity, removeItem } = useCart();
+  const { items, updateItemQuantity, removeItem, isEmpty } = useCart();
   const { register, getValues } = useForm();
 
   const cartItems = items.map(({ product }) => {
@@ -50,9 +50,9 @@ export default function Cart({ data }) {
     });
   };
 
-  return (
-    <div className="flex gap-6">
-      <div className="flex flex-row flex-wrap gap-6 w-3/4 p-32">
+  return !isEmpty ? (
+    <div className="flex gap-6" style={{ minHeight: "90vh" }}>
+      <div className="flex flex-row flex-wrap gap-6 w-3/4 px-32 py-20">
         {data.map(({ id: productId, name, images, variants }, idx) => {
           if (cartItems.includes(productId)) {
             return (
@@ -62,12 +62,12 @@ export default function Cart({ data }) {
                   width: "100%",
                   height: "fit-content",
                   display: "flex",
+                  border: "0.5px solid rgba(0,0,0,0.1)",
                 }}
-                className="flex flex-row flew-wrap"
+                className="flex flex-row flew-wrap p-2"
               >
                 <CardMedia
                   style={{
-                    height: "200px",
                     backgroundSize: "contain",
                     width: "calc(100% / 4)",
                   }}
@@ -155,6 +155,13 @@ export default function Cart({ data }) {
           </Link>
         </div>
       </Card>
+    </div>
+  ) : (
+    <div
+      style={{ minHeight: "80vh" }}
+      className="text-center mt-20 font-bold text-3xl"
+    >
+      Your cart is empty
     </div>
   );
 }

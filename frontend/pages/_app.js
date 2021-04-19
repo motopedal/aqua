@@ -10,8 +10,8 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <CartProvider>
-        <Navbar />
         <ContextProvider>
+          <Navbar />
           <Component {...pageProps} />
           {router.asPath !== "/products" && <Footer />}
         </ContextProvider>

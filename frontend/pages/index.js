@@ -17,7 +17,11 @@ export default function Home({ data }) {
     <div>
       <div>
         <img
-          style={{ height: "calc(100vh - 3rem)", width: "100%" }}
+          style={{
+            height: "calc(100vh - 3rem)",
+            width: "100%",
+            filter: "brightness(.6)",
+          }}
           src={`http://localhost:1337${data.Video.url}`}
         />
       </div>
@@ -67,10 +71,10 @@ export default function Home({ data }) {
             })}
           </Slider>
           <ButtonBack>
-            <img className="w-6" src="chevron-disc-left.svg" />
+            <div className="w-6 slider-left"></div>
           </ButtonBack>
           <ButtonNext>
-            <img className="w-6" src="chevron-disc-right.svg" />
+            <div className="w-6 slider-right"></div>
           </ButtonNext>
         </CarouselProvider>
       </div>
