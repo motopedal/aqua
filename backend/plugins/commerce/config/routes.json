@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/",
+      "handler": "commerce.index",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/track-create",
+      "handler": "tracker.trackerCreate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/track-user",
+      "handler": "tracker.trackerUpdate",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

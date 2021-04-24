@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "info": {
+    "name": "tracker",
+    "description": "This represents the tracker Model"
+  },
+  "attributes": {
+    "user_id": {
+      "default": "",
+      "type": "string"
+    },
+    "status": {
+      "default": "",
+      "type": "string"
+    },
+    "date": {
+      "default": "",
+      "type": "date"
+    }
+  }
+}
