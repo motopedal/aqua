@@ -1,30 +1,43 @@
-import React from "react";
+import { Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
-const PrimaryButton = ({ onClick, text }) => {
+const ButtonPrimary = withStyles({
+  root: {
+    boxShadow: "none",
+    textTransform: "none",
+    fontWeight: "bold",
+    fontSize: 16,
+    padding: "6px 12px",
+    lineHeight: 1.5,
+    border: "1px solid",
+    color: "black",
+    backgroundColor: "white",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      borderColor: "black",
+    },
+    "&:active": {
+      backgroundColor: "black",
+      borderColor: "black",
+    },
+    "&:focus": {
+      boxShadow: "none",
+    },
+  },
+})(Button);
+
+const PrimaryButton = ({ text, ...props }) => {
   return (
-    <>
-      <div
-        onClick={onClick}
-        className="hover:bg-black hover:text-white font-bold cursor-pointer text-center mt-14 border-2 border-black rounded-2xl py-2 w-32 self-center"
-      >
-        {text}
-      </div>
-    </>
+    <ButtonPrimary
+      className="w-32 self-center"
+      variant="contained"
+      color="primary"
+      {...props}
+    >
+      {text}
+    </ButtonPrimary>
   );
 };
 
-const CartButton = ({ onClick, text }) => {
-  return (
-    <>
-      <div
-        onClick={onClick}
-        className="font-bold rounded-2xl cursor-pointer text-center mt-2 border-2 border-black py-2 w-32 
-        self-right hover:bg-black hover:text-white  "
-      >
-        {text}
-      </div>
-    </>
-  );
-};
-
-export { PrimaryButton, CartButton };
+export { PrimaryButton };

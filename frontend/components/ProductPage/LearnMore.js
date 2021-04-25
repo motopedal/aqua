@@ -6,7 +6,7 @@ export default memo(function LearnMore({ learnmore, data, setIsActive }) {
   return (
     <div
       ref={learnmore}
-      className="flex pl-48  w-full absolute h-screen bg-white overflow-y-hidden"
+      className="flex pl-48 w-full absolute h-screen bg-white overflow-y-hidden"
       style={{
         height: "0px",
         bottom: 0,
@@ -17,14 +17,30 @@ export default memo(function LearnMore({ learnmore, data, setIsActive }) {
       <div className="w-3/4 mt-40">
         <div className="font-bold text-7xl">{name}</div>
         <div className="mt-14">{description}</div>
-        {variants?.map(({ packaging, price }) => {
-          return (
-            <div className="mt-14 flex ">
-              <div>{packaging}</div>
-              <div>{price}</div>
-            </div>
-          );
-        })}
+        <table
+          className="table-auto mt-24 text-left"
+          style={{
+            borderSpacing: "5px",
+            borderCollapse: "separate",
+          }}
+        >
+          <thead>
+            <tr>
+              <th class="w-1/2 text-left">Packaging</th>
+              <th class="w-1/4 text-left">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {variants.map(({ packaging, price }) => {
+              return (
+                <tr>
+                  <td>{packaging}</td>
+                  <td>{price} €</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
       <h1
         onClick={() => {

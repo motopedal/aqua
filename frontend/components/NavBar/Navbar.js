@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useCart } from "react-use-cart";
-import "tailwindcss/tailwind.css";
 
 export default function Navbar() {
   const { totalItems } = useCart();

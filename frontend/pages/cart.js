@@ -3,7 +3,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Input,
   Typography,
 } from "@material-ui/core";
 import React, { createRef, useEffect, useState } from "react";
@@ -12,7 +11,7 @@ import { fetcherGRAPHQL } from "../utils/fetcher";
 import { PRODUCT_PAGE_QUERY } from "../utils/schemas/query";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { CartButton } from "../components/Elements";
+import { InputField, PrimaryButton } from "../components/Elements";
 
 export default function Cart({ data }) {
   const [priceFields, setPriceFields] = useState([]);
@@ -22,7 +21,6 @@ export default function Cart({ data }) {
   const cartItems = items.map(({ product }) => {
     return product;
   });
-
   useEffect(() => {
     setPriceFields((field) =>
       Array(cartItems.length)
@@ -46,7 +44,9 @@ export default function Cart({ data }) {
         } else {
           removeItem(orderItem.id);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
     });
   };
 
@@ -72,52 +72,69 @@ export default function Cart({ data }) {
                     width: "calc(100% / 4)",
                   }}
                   image={`http://localhost:1337${images[0]?.url}`}
-                  title="Contemplative Reptile"
+                  // title="Contemplative Reptile"
                 />
                 <div className="flex flex-col w-full">
                   <CardContent>
                     <div className="flex flex-col">
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {name}
+                      <Typography gutterBottom variant="h4" component="h2">
+                        <b>{name}</b>
                       </Typography>
-                      {variants.map(({ id, packaging, price }) => {
-                        return cartItems.map((product, idy) => {
-                          if (
-                            product == productId &&
-                            items[idy].variant == id
-                          ) {
-                            return (
-                              <>
-                                <div className="flex items-center py-3 ">
-                                  <div className="w-1/6">
-                                    {packaging} / {price} €
-                                  </div>
-                                  <Input
-                                    id="standard-basic"
-                                    type="number"
-                                    placeholder="Quantity"
-                                    label="Quantity"
-                                    inputProps={{
-                                      ...register(`${productId}.${id}`),
-                                    }}
-                                    onChange={(e) => {
-                                      priceFields[idy].current.textContent =
-                                        price * e.target.value + " €";
-                                    }}
-                                    defaultValue={items[idy].quantity}
-                                  />
-                                  <div
-                                    className="w-14 text-right font-bold flex-grow"
-                                    ref={priceFields[idy]}
-                                  >
-                                    {items[idy].quantity * price + " €"}
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          }
-                        });
-                      })}
+                      <table
+                        className="table-auto my-3"
+                        style={{
+                          borderSpacing: "5px",
+                          borderCollapse: "separate",
+                        }}
+                      >
+                        <thead>
+                          <tr>
+                            <th class="w-1/2 text-left">Packaging</th>
+                            <th class="w-1/4 text-left">Price</th>
+                            <th class="w-1/4 text-left">Quantity</th>
+                            <th class="w-1/4 text-right">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {variants.map(({ id, packaging, price }) => {
+                            return cartItems.map((product, idy) => {
+                              if (
+                                product == productId &&
+                                items[idy].variant == id
+                              ) {
+                                return (
+                                  <tr>
+                                    <td>{packaging}</td>
+                                    <td>{price} €</td>
+                                    <td>
+                                      <InputField
+                                        type="number"
+                                        placeholder="Quantity"
+                                        inputProps={{
+                                          ...register(`${productId}.${id}`)
+                                        }}
+                                        onChange={(e) => {
+                                          priceFields[idy].current.textContent =
+                                            price * e.target.value + " €";
+                                        }}
+                                        defaultValue={items[idy].quantity}
+                                      />
+                                    </td>
+                                    <td>
+                                      <div
+                                        className="w-14 text-right font-bold flex-grow"
+                                        ref={priceFields[idy]}
+                                      >
+                                        {items[idy].quantity * price + " €"}
+                                      </div>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            });
+                          })}
+                        </tbody>
+                      </table>
                       <div>
                         {(() => {
                           let total = 0;
@@ -134,12 +151,12 @@ export default function Cart({ data }) {
                     </div>
                   </CardContent>
                   <CardActions className="flex justify-end">
-                    <CartButton
+                    <PrimaryButton
                       text="update cart"
                       onClick={() => handleCart(productId)}
                     />
                     <Link href={`/products?id=${idx}`} as="/products">
-                      <CartButton text="learn more" />
+                      <PrimaryButton text="learn more" />
                     </Link>
                   </CardActions>
                 </div>
@@ -151,7 +168,7 @@ export default function Cart({ data }) {
       <Card className="w-1/4 py-32">
         <div className="flex justify-center">
           <Link href="/checkout">
-            <CartButton text="Checkout" />
+            <PrimaryButton text="Checkout" />
           </Link>
         </div>
       </Card>

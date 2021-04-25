@@ -1,14 +1,13 @@
 import React, { createRef, memo, useEffect, useRef, useState } from "react";
 import { fetcherGRAPHQL } from "../../utils/fetcher";
 import { PRODUCT_PAGE_QUERY } from "../../utils/schemas/query";
-import { LinearProgress } from "@material-ui/core";
 import { useRouter } from "next/router";
+import { useCart } from "react-use-cart";
 import gsap from "gsap";
-import { PrimaryButton } from "../../components/Elements";
+import { PrimaryButton, LinearProgressBar } from "../../components/Elements";
 import CartPopUp from "../../components/ProductPage/CartPopUp";
 import SliderComponent from "../../components/ProductPage/SliderComponent";
 import LearnMore from "../../components/ProductPage/LearnMore";
-import { useCart } from "react-use-cart";
 
 export default memo(function Products({ data }) {
   const router = useRouter();
@@ -95,10 +94,7 @@ export default memo(function Products({ data }) {
           </>
         );
       })}
-      <LinearProgress
-        variant="determinate"
-        value={(newPosition + 1) * (100 / data.length)}
-      />
+      <LinearProgressBar value={(newPosition + 1) * (100 / data.length)} />
     </div>
   );
 });

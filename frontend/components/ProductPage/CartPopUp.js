@@ -1,7 +1,6 @@
 import React, { useRef, memo, useState } from "react";
-import Popover from "@material-ui/core/Popover";
-import { PrimaryButton } from "../Elements";
-import { Button, Card, CardActions, CardContent } from "@material-ui/core";
+import { InputField, PrimaryButton } from "../Elements";
+import { Card, CardActions, CardContent, Popover } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 
 export default memo(function CartPopUp({ data: productData, addItem }) {
@@ -9,14 +8,14 @@ export default memo(function CartPopUp({ data: productData, addItem }) {
   const { register, getValues, reset } = useForm();
 
   const handleCart = () => {
-    let data = [];
+    let cartData = [];
     const prices = {};
     productData.variants.map(({ id, price }) => {
       return (prices[id] = price);
     });
     for (const [key, value] of Object.entries(getValues())) {
       value.map((amount, id) => {
-        data.push({
+        cartData.push({
           id: productData.id * id * 96,
           product: key,
           variant: id,
@@ -25,7 +24,7 @@ export default memo(function CartPopUp({ data: productData, addItem }) {
         });
       });
     }
-    data.forEach((orderItem) => {
+    cartData.forEach((orderItem) => {
       if (orderItem.quantity >= 1) {
         addItem(orderItem, orderItem.quantity);
       }
@@ -54,43 +53,68 @@ export default memo(function CartPopUp({ data: productData, addItem }) {
       >
         <Card
           style={{
-            width: "500px",
+            width: "600px",
             height: "fit-content",
           }}
         >
           <CardContent>
             {productData.variants.length > 0 ? (
               <form>
-                {productData.variants.map(({ id, packaging, price }) => {
-                  const priceField = useRef();
-                  return (
-                    <div className="flex items-center py-3 justify-between">
-                      <div className="w-1/6">{packaging}</div>
-                      <input
-                        type="number"
-                        placeholder="Quantity"
-                        {...register(`${productData.id}.${id}`)}
-                        onChange={(e) => {
-                          priceField.current.textContent =
-                            price * e.target.value + " €";
-                        }}
-                      />
-                      <div
-                        className="w-14 text-right font-bold"
-                        ref={priceField}
-                      />
-                    </div>
-                  );
-                })}
+                <table
+                  className="table-auto my-3"
+                  style={{
+                    borderSpacing: "5px",
+                    borderCollapse: "separate",
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th class="w-1/2 text-left">Packaging</th>
+                      <th class="w-1/4 text-left">Price</th>
+                      <th class="w-1/4 text-left">Quantity</th>
+                      <th class="w-1/4 text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productData.variants.map(({ id, packaging, price }) => {
+                      const priceField = useRef();
+                      return (
+                        <tr>
+                          <td>{packaging}</td>
+                          <td>{price} €</td>
+                          <td>
+                            <InputField
+                              type="number"
+                              placeholder="Quantity"
+                              inputProps={{
+                                ...register(`${productData.id}.${id}`),
+                              }}
+                              onChange={(e) => {
+                                priceField.current.textContent =
+                                  price * e.target.value + " €";
+                              }}
+                            />
+                          </td>
+                          <td>
+                            <div
+                              className="w-14 text-right font-bold flex-grow"
+                              ref={priceField}
+                            >
+                              0 €
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </form>
             ) : (
               <div className="flex items-center py-3">Out of stock</div>
             )}
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary" onClick={() => handleCart()}>
-              Add to cart
-            </Button>
+            <PrimaryButton text="Add to cart!" onClick={() => handleCart()} />
           </CardActions>
         </Card>
       </Popover>

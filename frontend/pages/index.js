@@ -70,10 +70,10 @@ export default function Home({ data }) {
               );
             })}
           </Slider>
-          <ButtonBack>
+          <ButtonBack className="focus:outline-none">
             <div className="w-6 slider-left"></div>
           </ButtonBack>
-          <ButtonNext>
+          <ButtonNext className="focus:outline-none">
             <div className="w-6 slider-right"></div>
           </ButtonNext>
         </CarouselProvider>

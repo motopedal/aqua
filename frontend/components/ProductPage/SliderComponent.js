@@ -14,12 +14,13 @@ export default function SliderComponent({ images }) {
       {images?.length > 1 ? (
         <CarouselProvider
           visibleSlides={1}
-          totalSlides={2}
+          totalSlides={images?.length}
           step={1}
           naturalSlideWidth={400}
           naturalSlideHeight={400}
           className="text-center"
           isIntrinsicHeight
+          style={{ width: "650px" }}
         >
           <Slider>
             {images?.map(({ url }, index) => {
@@ -30,6 +31,7 @@ export default function SliderComponent({ images }) {
                       <Image
                         style={{ height: "400px", width: "400px" }}
                         src={`http://localhost:1337${url}`}
+                        isBgImage
                       />
                     </center>
                   </div>
@@ -38,11 +40,11 @@ export default function SliderComponent({ images }) {
             })}
           </Slider>
           <div className="mt-8">
-            <ButtonBack>
-              <img className="w-6 mt-2" src="chevron-disc-left.svg" />
+            <ButtonBack className="focus:outline-none">
+              <div className="w-6 slider-left"></div>
             </ButtonBack>
-            <ButtonNext>
-              <img className="w-6" src="chevron-disc-right.svg" />
+            <ButtonNext className="focus:outline-none">
+              <div className="w-6 slider-right"></div>
             </ButtonNext>
           </div>
         </CarouselProvider>
