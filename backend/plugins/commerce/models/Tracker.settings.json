@@ -17,6 +17,10 @@
     "date": {
       "default": "",
       "type": "date"
+    },
+    "bounce": {
+      "default": true,
+      "type": "boolean"
     }
   }
 }

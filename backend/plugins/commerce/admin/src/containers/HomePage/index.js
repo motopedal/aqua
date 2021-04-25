@@ -1,34 +1,42 @@
-import React, { memo , useState} from "react";
-import OrderChart from "../../components/Charts/OrderChart";
-import TotalUsers from "../../components/Charts/TotalUsers";
-import axios from 'axios'
+import React, { memo, useState } from "react";
+import OrderCharts from "../../components/Charts/OrderCharts";
+import UsersCharts from "../../components/Charts/UsersCharts";
+import axios from "axios";
 
 const HomePage = () => {
-  const [data,setData] = useState();
-  if(!data){
-    axios.get("http://localhost:1337/commerce").then(({data}) => {
-      setData(data)
-    })
+  const [data, setData] = useState();
+  if (!data) {
+    axios.get("http://localhost:1337/commerce").then(({ data }) => {
+      setData(data);
+    });
   }
   /*
-  Bounce Rate: 
-  
   Average Session Duration
 
   Pages Per Session
-
-  Complete Orders
   */
-  if(data){
-    return( 
-    <div style={{display:"flex", gap : "50px"}}>
-      <div style={{width:"calc(100% / 3)", height: "600px"}}>
-      <TotalUsers data={data.users} />
+  if (data) {
+    return (
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            width: "calc(100% / 2)",
+            borderRight: "1px solid rgba(0,0,0,10%)",
+            padding: "3rem",
+          }}
+        >
+          <h1>
+            <b>User stats</b>
+          </h1>
+          <UsersCharts data={data.users} />
+        </div>
+        <div style={{ width: "calc(100% / 2)", padding: "3rem" }}>
+          <h1>
+            <b>Order stats</b>
+          </h1>
+          <OrderCharts data={data.orders} />
+        </div>
       </div>
-      <div style={{width:"calc(100% / 3)", height: "500px"}}> 
-      <OrderChart data={data.orders} />
-      </div>
-    </div>
     );
   }
 };

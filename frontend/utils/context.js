@@ -2,14 +2,14 @@ import React, { createContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Transition } from "@react-spring/core";
 import { animated } from "@react-spring/web";
+import Cookies from "./cookies";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 
 const Context = createContext();
 
 const ContextProvider = (props) => {
-  const router = useRouter();
   const [cookies, setCookie] = useCookies();
+  const router = useRouter();
 
   const items = [
     {
@@ -18,23 +18,7 @@ const ContextProvider = (props) => {
   ];
 
   useEffect(() => {
-    if (!cookies.user_id) {
-      const token = Math.random().toString(36).substr(2);
-      setCookie("user_id", token);
-      axios.post("http://localhost:1337/commerce/track-create", {
-        user_id: token,
-      });
-    } else if (router.route == "/cart") {
-      axios.post(`http://localhost:1337/commerce/track-user`, {
-        user_id: cookies.user_id,
-        status: "cart",
-      });
-    } else if (router.route == "/checkout") {
-      axios.post(`http://localhost:1337/commerce/track-user`, {
-        user_id: cookies.user_id,
-        status: "checkout",
-      });
-    }
+    Cookies(cookies, setCookie, router);
   }, [router.route]);
   return (
     <Context.Provider value>
