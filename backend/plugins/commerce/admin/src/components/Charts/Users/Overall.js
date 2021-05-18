@@ -10,7 +10,7 @@ export default function Overall({ data }) {
     user.status == "cart" && (abandonedCart += 1);
     user.status == "checkout" && (checkout += 1);
   });
-
+  const style = { border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "3rem" }}>
       <h1>
@@ -18,64 +18,28 @@ export default function Overall({ data }) {
       </h1>
       <table>
         <tr>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            Users:
-          </td>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            {data.length}
+          <td style={style}>Users:</td>
+          <td style={style}>{data.length}</td>
+        </tr>
+        <tr>
+          <td style={style}>Bounce rate:</td>
+          <td style={style}>
+            {((bounceRate / data.length) * 100).toFixed(2)}%
           </td>
         </tr>
         <tr>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            Bounce rate:
-          </td>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            {(bounceRate / data.length) * 100}%
+          <td style={style}>Abandon cart rate:</td>
+          <td style={style}>
+            {((abandonedCart / data.length) * 100).toFixed(2)}%
           </td>
         </tr>
         <tr>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            Abandon cart rate:
-          </td>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            {(abandonedCart / data.length) * 100}%
-          </td>
+          <td style={style}>Checkouts:</td>
+          <td style={style}>{checkout}</td>
         </tr>
         <tr>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            Checkouts:
-          </td>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            {checkout}
-          </td>
-        </tr>
-        <tr>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            Checkouts rate:
-          </td>
-          <td
-            style={{ border: "0.2px solid rgba(0,0,0,0.3)", padding: "0.6rem" }}
-          >
-            {(checkout / data.length) * 100}%
-          </td>
+          <td style={style}>Checkouts rate:</td>
+          <td style={style}>{((checkout / data.length) * 100).toFixed(2)}%</td>
         </tr>
       </table>
     </div>

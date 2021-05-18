@@ -22,7 +22,7 @@ export default function UserRatesByTime({ data }) {
       },
     ],
   };
-  let userCounter = []
+  let userCounter = [];
   data.forEach((user) => {
     if (chartData.labels.includes(user.date)) {
       chartData.labels.findIndex((el, idx) => {
@@ -30,15 +30,21 @@ export default function UserRatesByTime({ data }) {
           user.bounce && (chartData.datasets[0].data[idx] += 1);
           user.status == "cart" && (chartData.datasets[1].data[idx] += 1);
           user.status == "checkout" && (chartData.datasets[2].data[idx] += 1);
-          userCounter[idx] += 1
+          userCounter[idx] += 1;
         }
       });
     } else {
       chartData.labels.push(user.date);
-      user.bounce && chartData.datasets[0].data.push(1);
-      user.status == "cart" && chartData.datasets[1].data.push(1);
-      user.status == "checkout" && chartData.datasets[2].data.push(1);
-      userCounter.push(1)
+      user.bounce
+        ? chartData.datasets[0].data.push(1)
+        : chartData.datasets[0].data.push(0);
+      user.status == "cart"
+        ? chartData.datasets[1].data.push(1)
+        : chartData.datasets[1].data.push(0);
+      user.status == "checkout"
+        ? chartData.datasets[2].data.push(1)
+        : chartData.datasets[2].data.push(0);
+      userCounter.push(1);
     }
   });
 
